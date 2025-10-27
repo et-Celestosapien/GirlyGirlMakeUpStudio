@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Girly Girl Makeup Studio</title>
+  <meta name="description" content="Girly Girl Makeup Studio — beauty salon: hair, mani, pedi, makeup & more." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    :root{
+      --bg:#f4fbf7;
+      --g1:#0f7a4a;   /* primary deep green */
+      --g2:#18a16b;   /* mid green */
+      --g3:#9be6c9;   /* light mint */
+      --accent: rgba(24,161,107,0.18);
+      --muted:#6b7f73;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 20px rgba(11,40,26,0.08);
+      --glass-border: rgba(255,255,255,0.4);
+      --max-width:1350px; 
+    }
+
+    *{box-sizing:border-box}
+    html{ scroll-behavior: smooth; }
+    html,body{height:100%; overflow-x: hidden;}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(180deg,var(--bg), #eef8f2 60%);
+      color:#123; -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding-bottom:80px;
+    }
+
+    .wrap{max-width:var(--max-width);margin:28px auto;padding:0 20px}
+
+    @keyframes gradient-flow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .text-gradient {
+        background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3), var(--g1));
+        background-size: 300% 100%;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: gradient-flow 10s ease-in-out infinite;
+        text-shadow: 0 3px 12px rgba(15, 122, 74, 0.3);
+    }
+    .text-gradient-static {
+        background: linear-gradient(90deg, var(--g1), var(--g2));
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+
+    h1, h2, h3 {
+      letter-spacing: -0.5px;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+    }
+    .hero h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+    }
+
+    header{
+      position: sticky;
+      top: 28px;
+      z-index: 1040;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px;border-radius:20px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+      backdrop-filter: blur(6px);
+      box-shadow:var(--shadow);
+      border: 1px solid var(--glass-border);
+    }
+    .brand, header nav {
+      position: relative;
+      z-index: 1;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+        width:64px;height:64px;border-radius:14px;
+        box-shadow:0 8px 18px rgba(15,122,74,0.18);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        }
+
+    .logo-half {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background-image: url(./assets/Logo.png); 
+      background-size: 200% 100%;
+      background-repeat: no-repeat;
+      will-change: transform;
+    }
+    #logo-left {
+      left: 0;
+      background-position: left center;
+    }
+    #logo-right {
+      right: 0;
+      background-position: right center;
+    }
+
+    .brand h1{
+        margin:0;font-size: clamp(1.2rem, 2vw, 1.25rem);
+        letter-spacing:0.2px;
+    }
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    nav{display:flex;gap:12px;align-items:center}
+    .nav-toggle{
+      display:none;
+      font-size: 28px;
+      border: none; background: transparent;
+      color: var(--g1); cursor: pointer;
+      z-index: 1101;
+      padding: 0;
+    }
+    .nav-links-desktop{
+      display:flex; 
+      gap:14px;
+      align-items: center;
+    }
+    .nav-links-desktop a{color:var(--g1);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px}
+    .nav-links-desktop a:hover{background:var(--accent)}
+    
+    .nav-links {
+      display: none; 
+    }
+    .nav-close { display: none; }
+    
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1050;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .nav-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+
+    /* --- Dropdown Menu Styles --- */
+    .nav-item {
+      position: relative;
+    }
+    .nav-item .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 220px;
+      z-index: 1101;
+      border: 1px solid var(--glass-border);
+      opacity: 0;
+      transform: translateY(10px);
+      visibility: hidden;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+    .nav-links-desktop .nav-item:hover .dropdown-menu {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--g1);
+      white-space: nowrap;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .dropdown-menu a:hover {
+      background: var(--accent);
+    }
+    /* Mobile dropdown styles */
+    .nav-links .nav-item {
+      width: 100%;
+    }
+    .nav-links .nav-item > a.services-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .nav-links .nav-item > a.services-toggle::after {
+      content: '▼';
+      font-size: 10px;
+      opacity: 0.7;
+      transition: transform 0.2s ease;
+    }
+    .nav-links .nav-item.open > a.services-toggle::after {
+      transform: rotate(180deg);
+    }
+    .nav-links .nav-item .dropdown-menu {
+      position: static;
+      display: none;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+      padding: 0 0 0 16px;
+      min-width: auto;
+      opacity: 1;
+      transform: none;
+      visibility: visible;
+      transition: none;
+    }
+    .nav-links .nav-item.open .dropdown-menu {
+      display: block;
+    }
+
+    .petals-decor-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .petal { 
+      transform-origin: center; 
+      opacity: 0.9;
+      filter: blur(0.5px);
+    }
+
+
+    .cta{
+      background:linear-gradient(90deg,var(--g2),var(--g1));color:white;padding:10px 14px;border-radius:12px;
+      font-weight:700;box-shadow:0 10px 24px rgba(24,161,107,0.12);border:none;cursor:pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow:0 12px 28px rgba(24,161,107,0.18); }
+
+    .hero{display:grid;grid-template-columns:1fr;gap:24px;align-items:center;margin:26px 0}
+    .hero-card{
+      padding:26px;border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+      box-shadow:var(--shadow);
+      border: 1px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+      text-align: center;
+    }
+    .hero-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .flower-svg {
+      position: absolute;
+      bottom: -40px;
+      width: 25px;
+      height: 25px;
+      pointer-events: none;
+      will-change: transform, opacity;
+      z-index: 0;
+    }
+    
+    .hero p{margin:0;color:var(--muted)}
+
+    .hero-divider {
+      height: 1px;
+      width: 80%;
+      margin: 24px auto;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.7;
+    }
+
+    /* Services Grid */
+    .services-section h2 { margin: 40px 0 12px 0; }
+    
+    .subsection-heading {
+      font-size: clamp(1.5rem, 2.5vw, 1.8rem);
+      margin: 40px 0 16px 0;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+    }
+
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .service-card{
+      position:relative;padding:18px;border-radius:14px;
+      background:var(--card);
+      box-shadow:var(--shadow);overflow:hidden;
+      transition:transform .28s cubic-bezier(.2,.9,.3,1),box-shadow .28s;
+      cursor:pointer;border:1px solid rgba(10,10,10,0.02);
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+    }
+    
+    .service-card::before{
+      content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+      background: linear-gradient(90deg, transparent, rgba(155,230,201,0.3), transparent);
+      transition: left 0.6s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--g2), var(--g3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .service-card:hover{
+      transform:translateY(-8px) scale(1.01);
+      box-shadow:0 18px 32px rgba(15,122,74,0.12);
+    }
+    .service-card:hover::before { left: 100%; }
+    .service-card:hover::after { opacity: 1; }
+
+    .service-top{display:flex;align-items:center;gap:14px; position: relative; z-index: 2;}
+    .service-ic{
+      width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-weight:700;background:linear-gradient(135deg,var(--g3),#fff);
+      border:1px solid rgba(15,122,74,0.06);
+      font-size: 28px;
+      animation: bounce 2.2s infinite ease-in-out;
+    }
+    .service-card:nth-child(1) .service-ic { animation-delay: 0s; }
+    .service-card:nth-child(2) .service-ic { animation-delay: 0.2s; }
+    .service-card:nth-child(3) .service-ic { animation-delay: 0.4s; }
+    .service-card:nth-child(4) .service-ic { animation-delay: 0.6s; }
+    .service-card:nth-child(5) .service-ic { animation-delay: 0.8s; }
+    .service-card:nth-child(6) .service-ic { animation-delay: 1.0s; }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    @keyframes softGlow {
+      0% { box-shadow: 0 6px 20px rgba(11,40,26,0.08); }
+      50% { box-shadow: 0 10px 30px rgba(11,40,26,0.16); }
+      100% { box-shadow: 0 6px 20px rgba(11,40,26,0.08); }
+    }
+
+    .service-title{font-weight:700;margin:0; font-size: 18px;}
+    .service-desc{font-size:13px;color:var(--muted);margin-top:6px}
+    .price{margin-left:auto;font-weight:800;color:var(--g1)}
+    .service-actions{display:flex;gap:10px;margin-top:14px; position: relative; z-index: 2;}
+    .btn{padding:8px 12px;border-radius:10px;border:none;background:transparent;cursor:pointer;font-weight:700}
+    .btn.book{background:linear-gradient(90deg,var(--g2),var(--g1));color:white}
+    .btn.details{color: var(--g1); background: var(--accent);}
+
+    /* --- Swiper Gallery Styles --- */
+    .swiper-gallery {
+      width: 100%;
+      padding-top: 50px;
+      padding-bottom: 70px;
+      overflow: visible;
+    }
+    
+    /* ===== FIX 2: Adjusted Frame Size (Desktop) ===== */
+    .swiper-gallery .swiper-slide {
+      background-position: center;
+      background-size: cover;
+      width: 225px;  /* 9:16 Ratio */
+      height: 400px; /* 9:16 Ratio */
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    .swiper-gallery .swiper-slide-active {
+      width: 338px;  /* 9:16 Ratio */
+      height: 600px; /* 9:16 Ratio */
+    }
+    /* ============================================== */
+    
+    .swiper-gallery .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    .swiper-gallery .swiper-pagination-bullet {
+      background: var(--g3);
+      opacity: 0.8;
+    }
+    .swiper-gallery .swiper-pagination-bullet-active {
+      background: var(--g1);
+      opacity: 1;
+    }
+
+
+    /* Contact Section */
+    .contact-section {
+      margin-top: 40px;
+      padding: 2.5rem 0;
+      background: linear-gradient(180deg, rgba(244,251,247,0.5), rgba(238,248,242,0.8));
+      border-radius: 18px;
+    }
+    .contact-header { text-align: center; margin-bottom: 2.5rem; }
+    .contact-header h2 { margin-bottom: 8px; }
+    .contact-header p { color: var(--muted); font-size: 1.1rem; }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2.5rem;
+      padding: 0 1.5rem;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .info-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+    }
+    .info-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(11,40,26,0.12);
+    }
+    .info-icon {
+      font-size: 1.8rem;
+      min-width: 40px;
+      text-align: center;
+      margin-top: 3px;
+    }
+    .info-item h4 {
+      color: var(--g1);
+      margin: 0 0 0.3rem 0;
+    }
+    .info-item p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+    
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+    }
+
+    .service-card:hover,
+    .hero-card:hover,
+    .info-item:hover,
+    .contact-form:hover {
+      animation-play-state: paused;
+    }
+    /* Stop glow on swiper hover */
+    .swiper-gallery:hover .swiper-slide {
+      animation-play-state: paused;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #fcfcfc;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--g2);
+      box-shadow: 0 0 0 3px var(--accent);
+      background-color: var(--white);
+    }
+    .contact-form textarea { resize: vertical; min-height: 100px; }
+    .submit-btn {
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      background: linear-gradient(90deg, var(--g2), var(--g1));
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(24,161,107,0.15);
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(24,161,107,0.25);
+    }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%);
+      color: var(--white);
+      padding: 3rem 2rem 1.5rem;
+      border-radius: 18px;
+      margin-top: 40px;
+    }
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-section h4 {
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+      color: var(--white);
+    }
+    .footer-section p, .footer-section a {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+    .footer-section ul {
+      list-style: none;
+      padding: 0; margin: 0;
+    }
+    .footer-section ul li {
+      margin-bottom: 0.7rem;
+    }
+    .footer-section a:hover {
+      color: var(--white);
+      text-decoration: underline;
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: var(--white);
+      transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+      transform: translateY(-3px) scale(1.1);
+    }
+    .social-icon[aria-label="Instagram"]:hover {
+      background: #E4405F;
+      color: white;
+      box-shadow: 0 4px 14px 0 rgba(228, 64, 95, 0.38);
+    }
+    .social-icon[aria-label="Facebook"]:hover {
+      background: #1877F2;
+      color: white;
+      box-shadow: 0 4px 14px 0 rgba(24, 119, 242, 0.38);
+    }
+    .social-icon[aria-label="TikTok"]:hover {
+      background: #000000;
+      color: white;
+      box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.38);
+    }
+    .social-icon[aria-label="WhatsApp"]:hover {
+      background: #25D366;
+      color: white;
+      box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.38);
+    }
+
+    .footer-bottom {
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    .footer-bottom a {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+    }
+
+    .float-contact{
+      position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:14px;
+      background:linear-gradient(135deg,var(--g2),var(--g1));display:flex;align-items:center;
+      justify-content:center;color:white;border:none;box-shadow:0 14px 36px rgba(24,161,107,0.18);
+      cursor:pointer; z-index: 1000; font-size: 24px;
+    }
+
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;
+      background:rgba(0,0,0,0.7);
+      z-index:1200;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal.open{display:flex; opacity: 1;}
+
+    .modal-content{
+      background: transparent;
+      color: #333;
+      padding: 0;
+      border-radius: 20px;
+      max-width: 550px;
+      width: 90%;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+      position: relative; 
+      animation: none;   
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+      overflow: visible;
+    }
+    
+    .modal-inner-content {
+      background: var(--card);
+      padding: 30px 40px;
+      border-radius: 20px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .modal-content::before {
+        content: '';
+        position: absolute;
+        top: -2px; 
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 22px; 
+        z-index: -1;
+        background: linear-gradient(
+            45deg, 
+            var(--g2) 0%, 
+            var(--g3) 50%, 
+            var(--g2) 100%
+        );
+        animation: rim-light-pulse 5s ease-in-out infinite;
+        filter: blur(8px);
+        opacity: 0.8;
+        pointer-events: none;
+    }
+
+    @keyframes rim-light-pulse {
+        0% { background-position: 0% 50%; opacity: 0.8; }
+        50% { background-position: 100% 50%; opacity: 1; }
+        100% { background-position: 0% 50%; opacity: 0.8; }
+    }
+    
+    .modal.open .modal-content { transform: scale(1); }
+    
+    .modal-inner-content h3 {
+      margin: 0 0 5px 0;
+      font-size: 26px; 
+    }
+
+    .modal-inner-content .price { 
+      font-size: 24px; 
+      font-weight: 800; 
+      color: var(--g1); 
+      margin-bottom: 16px; 
+      border-bottom: 2px solid var(--g3);
+      padding-bottom: 8px;
+    }
+
+    .modal-inner-content ul {
+        list-style: none;
+        padding: 0; 
+        margin: 15px 0 20px 0;
+        font-size: 1.1rem; 
+        line-height: 1.6;
+    }
+    .modal-inner-content ul li {
+        padding: 8px 0 8px 25px;
+        border-bottom: 1px dashed var(--accent);
+        position: relative;
+        color: var(--muted);
+    }
+    .modal-inner-content ul li::before {
+        content: '•';
+        color: var(--g1);
+        font-size: 1.5rem;
+        font-weight: 800;
+        position: absolute;
+        left: 0;
+        line-height: 1;
+    }
+    
+    .modal-inner-content .btn.book {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+    
+    .modal-close {
+      position: absolute; top: 15px; right: 15px; 
+      background: var(--accent); color: var(--g1);
+      border: none; border-radius: 50%;
+      width: 36px; height: 36px; 
+      font-weight: 600; font-size: 22px; 
+      cursor: pointer; line-height: 1;
+      z-index: 2;
+    }
+
+
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,0.6);z-index:1200}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:96%;max-height:86%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+
+    .tilt{transform-style:preserve-3d;will-change:transform}
+    .pulse{animation:pulse 2.6s ease-in-out infinite}
+    @keyframes pulse{0%{box-shadow:0 8px 18px rgba(24,161,107,0.08)}50%{box-shadow:0 18px 32px rgba(24,161,107,0.12)}100%{box-shadow:0 8px 18px rgba(24,161,107,0.08)}}
+    .muted{color:var(--muted);font-size:13px}
+    a.social-label{font-weight:600;color:var(--g1);text-decoration:none}
+    
+    .footer {
+      position: relative;
+      overflow: hidden;
+      background: transparent; 
+    }
+
+    #footer-animation-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%);
+    }
+
+    .footer-content, .footer-bottom {
+      position: relative;
+      z-index: 1;
+    }
+
+    .leaf-svg {
+      position: absolute;
+      top: -40px;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    .interior-showcase {
+      margin: 24px 0 0 0; 
+      padding: 24px 24px 24px 24px;
+    }
+    .scroller {
+      overflow: hidden;
+      -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+      mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+    }
+    .scroller__inner {
+      display: flex;
+      gap: 16px;
+      list-style: none;
+      padding: 0 16px;
+      margin: 0;
+    }
+    .scroller__inner li {
+      height: 200px;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--g3);
+      flex-shrink: 0;
+      box-shadow: 0 0 16px 4px rgba(15, 122, 74, 0.5); 
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+    .scroller__inner li:hover {
+      transform: scale(1.03);
+      animation-play-state: paused;
+    }
+    .scroller__inner li:nth-child(even) {
+      animation-delay: -1.75s;
+    }
+    .scroller__inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    @keyframes dynamic-glow {
+      0% { box-shadow: 0 0 8px 0px rgba(15, 122, 74, 0.3); }
+      50% { box-shadow: 0 0 18px 4px rgba(15, 122, 74, 0.6); }
+      100% { box-shadow: 0 0 8px 0px rgba(15, 122, 74, 0.3); }
+    }
+    
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .scroller[data-animated="true"] .scroller__inner {
+      width: max-content;
+      flex-wrap: nowrap;
+      animation: scroll-left 40s linear infinite;
+    }
+
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width:1000px){
+      .services{grid-template-columns:repeat(2,1fr)}
+      .contact-container { grid-template-columns: 1fr; }
+    }
+    
+    @media (max-width: 768px){
+      header {
+        top: 16px;
+      }
+      .wrap {
+        padding: 0 16px;
+        margin: 16px auto;
+      }
+      header {
+        top: 16px;
+      }
+      
+      .nav-links-desktop {
+        display: none;
+      }
+      
+      .nav-toggle { 
+        display: block; 
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0; 
+        width: 280px;
+        height: 100vh;
+        background: var(--card);
+        display: flex; 
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 60px 20px 20px;
+        gap: 10px;
+        box-shadow: -5px 0 20px rgba(11,40,26,0.1);
+        transform: translateX(280px);
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index: 1100;
+        overflow-y: auto;
+      }
+      .nav-links.open {
+        transform: translateX(0);
+      }
+      .nav-links a { 
+        background: transparent;
+        color: var(--g1);
+        text-align: left;
+        padding: 12px 10px;
+        width: 100%;
+        font-size: 1.1rem;
+        border-radius: 8px;
+      }
+      .nav-links a:hover {
+        background: var(--accent);
+      }
+      .nav-links .dropdown-menu a {
+        padding: 10px 10px 10px 20px;
+        font-size: 1rem;
+      }
+
+      .nav-close {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 28px;
+        color: var(--g1);
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .services{grid-template-columns:1fr}
+      .contact-section { padding: 2rem 0; }
+      .contact-container { padding: 0 1rem; }
+      .footer-content { grid-template-columns: 1fr; }
+
+      .scroller__inner li {
+        height: 200px;
+      }
+      .interior-showcase {
+          margin: 24px 0 0 0;
+      }
+      
+      /* ===== FIX 2: Adjusted Frame Size (Mobile) ===== */
+      .swiper-gallery {
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+      .swiper-gallery .swiper-slide {
+        width: 180px;  /* 9:16 Ratio */
+        height: 320px; /* 9:16 Ratio */
+      }
+      .swiper-gallery .swiper-slide-active {
+        width: 270px;  /* 9:16 Ratio */
+        height: 480px; /* 9:16 Ratio */
+      }
+      /* ============================================= */
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header id="header" class="dynamic-glow">
+      <div id="headerPetalsLayer" class="petals-decor-layer" aria-hidden="true"></div>
+
+      <div class="brand">
+        <div class="logo" aria-label="Girly Girl Logo">
+            <div class="logo-half" id="logo-left"></div>
+            <div class="logo-half" id="logo-right"></div>
+        </div> 
+        <div> 
+          <h1 class="text-gradient">Girly Girl Makeup Studio</h1>
+          <p>Beauty • Confidence • Glow</p>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false">☰</button>
+        
+        <div class="nav-links-desktop">
+          <a href="#">Home</a>
+          
+          <div class="nav-item">
+            <a href="#services" class="services-toggle">Services</a>
+            <div class="dropdown-menu">
+              <a href="#hair-styling">Hair</a>
+              <a href="#facials">Facials</a>
+              <a href="#hydra-facial">Hydra Facial</a>
+              <a href="#kashees-facials">Kashee's Facials</a>
+              <a href="#mani-pedi">Mani/Pedi</a>
+              <a href="#waxing">Waxing</a>
+              <a href="#mehndi">Mehndi</a>
+              <a href="#mehndi-packages">Mehndi Packages</a>
+              <a href="#barat-packages">Barat Packages</a>
+              <a href="#walima-packages">Walima Packages</a>
+              <a href="#other-makeover">Other Makeovers</a>
+              <a href="#party-senior">Party/Senior Makeup</a>
+              <a href="#special-offers">Special Offers</a>
+            </div>
+          </div>
+          
+          <a href="#gallery">Gallery</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card tilt" id="heroCard">
+          <h2 class="text-gradient">Welcome to Girly Girl Make Up Studio</h2>
+          <p>Where every session is crafted to give you a fresh, confident glow. Explore our services, view the gallery, and book your moment of beauty.</p>
+          
+          <section class="interior-showcase" aria-label="Our Salon Interior">
+            <div class="scroller" data-direction="left">
+              <ul class="scroller__inner">
+                <li><img src="./assets/BilBoard@0.75x.jpg" alt="Bright salon interior with chairs"></li>
+                <li><img src="./assets/DP1.jpg" alt="Makeup station with mirror and lights"></li>
+                <li><img src="./assets/DP2.jpg" alt="Makeup station with mirror and lights"></li>
+                <li><img src="./assets/DP3.jpg" alt="Makeup station with mirror and lights"></li>
+                <li><img src="./assets/DP4.jpg" alt="Makeup station with mirror and lights"></li>
+                <li><img src="./assets/DP5.jpg" alt="Makeup station with mirror and lights"></li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="services-section" id="services" role="region" aria-labelledby="services-heading">
+        <h2 id="services-heading" class="text-gradient" style="align-self: center;">Our Services</h2>
+        
+        <h3 class="subsection-heading text-gradient-static" id="hair-styling">Hair Styling, Cuts & Treatments</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Hair Styling" data-price="1000+" data-details="<ul><li>Curls Simple: Rs 2,000</li><li>Setting: Rs 1,500 - 2,500</li><li>Heavy Curls Setting: Rs 3,000</li><li>Juda (Bun) Styling: Rs 1,500 - 2,000</li><li>Tail Styling: Rs 1,000 - 1,500</li><li>Party Styling: Rs 2,000 - 2,500</li></ul>">
+            <div class="service-top"><div class="service-ic">💇‍♀️</div><div><h3 class="service-title text-gradient-static">Hair Styling</h3><div class="service-desc">Curls, buns, party styles, and more.</div></div><div class="price">Rs 1,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Hair Cuts" data-price="800+" data-details="<ul><li>Layers Cut: Rs 2,000</li><li>Layers Cut With Setting: Rs 2,500</li><li>Step Cut: Rs 2,000</li><li>Steps + Layers Cut: Rs 3,000</li><li>Feather Cut: Rs 2,500</li><li>U+V Shapes Cut: Rs 2,000</li><li>Bob Cut: Rs 2,000</li><li>Trimming: Rs 800 - 1,000</li><li>Bangs: Rs 1,000</li></ul>">
+            <div class="service-top"><div class="service-ic">✂️</div><div><h3 class="service-title text-gradient-static">Hair Cuts</h3><div class="service-desc">Layers, steps, bob, trimming, and more.</div></div><div class="price">Rs 800+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Hair Treatments" data-price="2000+" data-details="<ul><li>Deep Conditioning With Mask: Rs 2,000</li><li>Protein Treatment (Normal): Rs 4,500</li><li>Protein Treatment (Highest Brands): Rs 7,500</li></ul>">
+            <div class="service-top"><div class="service-ic">🌿</div><div><h3 class="service-title text-gradient-static">Hair Treatments</h3><div class="service-desc">Deep conditioning and protein treatments.</div></div><div class="price">Rs 2,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Keratin / Extenxo / Rebounding" data-price="15,000+" data-details="Prices vary by hair length (Small / Medium / Long / Extra):<ul><li><b>Keratin:</b> Rs 20,000 / 26,000 / 32,000 / 36,000</li><li><b>Extenxo:</b> Rs 20,000 / 26,000 / 32,000 / 36,000</li><li><b>Rebounding:</b> Rs 15,000 / 18,000 / 22,000 / 26,000</li></ul>">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Keratin & Rebounding</h3><div class="service-desc">Premium hair straightening services.</div></div><div class="price">Rs 15,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Keune Color Application" data-price="8,500+" data-details="<ul><li>Short Length (Shoulder): Rs 8,500</li><li>Medium Length: Rs 12,500</li><li>Long Length: Rs 16,500</li></ul>">
+            <div class="service-top"><div class="service-ic">🎨</div><div><h3 class="service-title text-gradient-static">Keune Color Application</h3><div class="service-desc">Professional hair coloring.</div></div><div class="price">Rs 8,500+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="facials">Facials & Skin Polishing</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Standard Facials" data-price="2,000+" data-details="<ul><li>Normal Whitening: Rs 2,000</li><li>Herbal Facial: Rs 2,000</li><li>Whitening Facial: Rs 2,500</li><li>Medicated Facial: Rs 3,500</li><li>Hydrating Facial: Rs 3,500</li><li>Whitening Facial For Oily Skin: Rs 3,500</li><li>Janssens Facial: Rs 5,500</li></ul>">
+            <div class="service-top"><div class="service-ic">🧖‍♀️</div><div><h3 class="service-title text-gradient-static">Standard Facials</h3><div class="service-desc">Whitening, Herbal, Medicated, and more.</div></div><div class="price">Rs 2,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Skin Polishing" data-price="600+" data-details="<ul><li>Face & Neck Polisher: Rs 600</li><li>Skin Polishing (1 Massage + 1 Mask): Rs 800</li><li>Skin Polishing (1 Massage + 2 Mask): Rs 1,200</li><li>Body Polishing (With Two Massage): Rs 5,000</li></ul>">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Skin Polishing</h3><div class="service-desc">Face, neck, and full body polishing.</div></div><div class="price">Rs 600+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="hydra-facial">Hydra Facial</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Hydra Facial Simple" data-price="7500" data-details="Hydra Facial Simple treatment. Note: 6 Sittings Must, Timing 20 Day.">
+            <div class="service-top"><div class="service-ic">💧</div><div><h3 class="service-title text-gradient-static">Hydra Facial Simple</h3><div class="service-desc">Advanced facial treatment. 6 sittings required.</div></div><div class="price">Rs 7,500</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Hydra Facial With Whitening" data-price="10000" data-details="Hydra Facial with Whitening. Note: 6 Sittings Must, Timing 20 Day.">
+            <div class="service-top"><div class="service-ic">💎</div><div><h3 class="service-title text-gradient-static">Hydra Facial With Whitening</h3><div class="service-desc">Advanced facial with whitening. 6 sittings required.</div></div><div class="price">Rs 10,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="kashees-facials">Kashee's Facials</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Kashee's Whitening Facial" data-price="4500" data-details="Signature Kashee's Whitening Facial.">
+            <div class="service-top"><div class="service-ic">🌸</div><div><h3 class="service-title text-gradient-static">Whitening Facial</h3><div class="service-desc">Signature Kashee's whitening treatment.</div></div><div class="price">Rs 4,500</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Kashee's Glass Skin Treatment" data-price="6000" data-details="Signature Kashee's Glass Skin Treatment.">
+            <div class="service-top"><div class="service-ic">🧊</div><div><h3 class="service-title text-gradient-static">Glass Skin Treatment</h3><div class="service-desc">Achieve a flawless, glass-like finish.</div></div><div class="price">Rs 6,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Kashee's Extra Whitening Facial" data-price="5000" data-details="Signature Kashee's Extra Whitening Facial.">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Extra Whitening Facial</h3><div class="service-desc">Intensive whitening treatment.</div></div><div class="price">Rs 5,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Kashee's Gold Facial" data-price="3500" data-details="Signature Kashee's Gold Facial.">
+            <div class="service-top"><div class="service-ic">🌟</div><div><h3 class="service-title text-gradient-static">Gold Facial</h3><div class="service-desc">A luxurious gold facial treatment.</div></div><div class="price">Rs 3,500</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Kashee's Vitamin C Facial" data-price="3000" data-details="Signature Kashee's Vitamin C Facial.">
+            <div class="service-top"><div class="service-ic">🍊</div><div><h3 class="service-title text-gradient-static">Vitamin C Facial</h3><div class="service-desc">Brightening and rejuvenating facial.</div></div><div class="price">Rs 3,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="mani-pedi">Mani-Pedi & Massage</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Manicure (Regular)" data-price="2000" data-details="A complete regular manicure for clean and beautiful hands.">
+            <div class="service-top"><div class="service-ic">💅</div><div><h3 class="service-title text-gradient-static">Manicure (Regular)</h3><div class="service-desc">Regular manicure service.</div></div><div class="price">Rs 2,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Pedicure (Regular)" data-price="2000" data-details="A complete regular pedicure for relaxing and beautifying your feet.">
+            <div class="service-top"><div class="service-ic">🦶</div><div><h3 class="service-title text-gradient-static">Pedicure (Regular)</h3><div class="service-desc">Regular pedicure service.</div></div><div class="price">Rs 2,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Extra Whitening with Paraffin" data-price="6000" data-details="Premium Manicure and Pedicure with extra whitening and a paraffin wax treatment.">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Extra Whitening w/ Paraffin</h3><div class="service-desc">Mani/Pedi combo with paraffin wax.</div></div><div class="price">Rs 6,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Massages" data-price="1,500+" data-details="<ul><li>Head Massage: Rs 1,500</li><li>Shoulder Massage: Rs 1,500</li><li>Legs Massage: Rs 1,500</li><li>Body Massage: Rs 4,000</li></ul>">
+            <div class="service-top"><div class="service-ic">💆‍♀️</div><div><h3 class="service-title text-gradient-static">Massages</h3><div class="service-desc">Relaxing head, shoulder, leg, and body massages.</div></div><div class="price">Rs 1,500+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+        
+        <h3 class="subsection-heading text-gradient-static" id="waxing">Waxing Services</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Sugar Wax" data-price="300+" data-details="<ul><li>Half Arm Wax: Rs 500</li><li>Full Arms Wax: Rs 650</li><li>Half Leg Wax: Rs 700</li><li>Full Leg Wax: Rs 1,200</li><li>Under Arms Wax: Rs 300</li><li>Under Legs Wax: Rs 700</li><li>Full Body Wax: Rs 5,000</li></ul>">
+            <div class="service-top"><div class="service-ic">🍯</div><div><h3 class="service-title text-gradient-static">Sugar Wax</h3><div class="service-desc">Gentle and natural hair removal.</div></div><div class="price">Rs 300+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Fruit Wax" data-price="450+" data-details="<ul><li>Half Arm Wax: Rs 700</li><li>Full Arms Wax: Rs 1,000</li><li>Half Leg Wax: Rs 1,000</li><li>Full Leg Wax: Rs 1,500</li><li>Under Arms Wax: Rs 450</li><li>Under Legs Wax: Rs 1,000</li><li>Full Body Wax: Rs 8,000</li></ul>">
+            <div class="service-top"><div class="service-ic">🍓</div><div><h3 class="service-title text-gradient-static">Fruit Wax</h3><div class="service-desc">Nourishing wax for sensitive skin.</div></div><div class="price">Rs 450+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="mehndi">Mehndi Application</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Arabic Mehndi" data-price="2,000+" data-details="Price varies by design complexity: Rs 2,000 / Rs 4,000 / Rs 5,000.">
+            <div class="service-top"><div class="service-ic">🌙</div><div><h3 class="service-title text-gradient-static">Arabic Mehndi</h3><div class="service-desc">Flowing, bold floral patterns.</div></div><div class="price">Rs 2,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Bridal Mehndi" data-price="5,000+" data-details="Price varies by intricacy: Rs 5,000 / Rs 8,000.">
+            <div class="service-top"><div class="service-ic">👰</div><div><h3 class="service-title text-gradient-static">Bridal Mehndi</h3><div class="service-desc">Intricate, detailed bridal designs.</div></div><div class="price">Rs 5,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Normal Mehndi" data-price="800+" data-details="Price varies by design: Rs 800 / Rs 1,000 / Rs 1,200.">
+            <div class="service-top"><div class="service-ic">🌿</div><div><h3 class="service-title text-gradient-static">Normal Mehndi</h3><div class="service-desc">Classic, everyday mehndi patterns.</div></div><div class="price">Rs 800+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Simple Mehndi" data-price="300+" data-details="Price varies by design: Rs 300 / Rs 500.">
+            <div class="service-top"><div class="service-ic">🍃</div><div><h3 class="service-title text-gradient-static">Simple Mehndi</h3><div class="service-desc">Elegant and minimal designs.</div></div><div class="price">Rs 300+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Ball Design Mehndi" data-price="1,000+" data-details="Price varies by design: Rs 1,000 / Rs 1,500.">
+            <div class="service-top"><div class="service-ic">💮</div><div><h3 class="service-title text-gradient-static">Ball Design Mehndi</h3><div class="service-desc">Stylish and modern circular patterns.</div></div><div class="price">Rs 1,000+</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="mehndi-packages">Mehndi Makeover Packages</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Signature Mehndi Makeover Package" data-price="65000" data-details="<ul><li>Makeup with Services</li><li>Manicure - Pedicure</li><li>Lashes</li><li>Nail paint application</li><li>Duppata Setting</li><li>Gajray + Hairduo with flowers</li><li>Skin care before Makeup</li><li>Whitening facial</li><li>Eyebrows + Uperlips</li></ul>">
+            <div class="service-top"><div class="service-ic">🎨</div><div><h3 class="service-title text-gradient-static">Signature Mehndi Makeover</h3><div class="service-desc">The ultimate package for your mehndi event.</div></div><div class="price">Rs 65000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Principle Mehndi Makeover" data-price="45000" data-details="<ul><li>Makeup + Hairduo</li><li>Mehndi</li><li>Nails</li><li>Eyebrows + Uperlips</li><li>Lashes</li><li>Dupata Setting</li></ul>">
+            <div class="service-top"><div class="service-ic">🌿</div><div><h3 class="service-title text-gradient-static">Principle Mehndi Makeover</h3><div class="service-desc">A comprehensive package for a stunning look.</div></div><div class="price">Rs 45000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Senior Makeover Package (Mehndi)" data-price="35000" data-details="<ul><li>Makeup + Hairduo</li><li>Nails</li><li>Eyebrows + Uperlips</li><li>Lashes</li></ul>">
+            <div class="service-top"><div class="service-ic">🍃</div><div><h3 class="service-title text-gradient-static">Senior Makeover Package</h3><div class="service-desc">Elegant makeup and hair for the event.</div></div><div class="price">Rs 35000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="barat-packages">Barat Makeover Packages</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Signature Barat Makeover Package" data-price="85000" data-details="<ul><li>Makeup with Services</li><li>Hydra Facial</li><li>Full Body wax</li><li>Hand and Feet polisher</li><li>Lashes</li><li>Nail paint application</li><li>Duppata Setting</li><li>Gajray + Hairduo with flowers</li><li>Skin care before Makeup</li><li>Whitening facial</li><li>Eyebrows + Uperlips</li></ul>">
+            <div class="service-top"><div class="service-ic">💍</div><div><h3 class="service-title text-gradient-static">Signature Barat Makeover</h3><div class="service-desc">The all-inclusive bridal package for your big day.</div></div><div class="price">Rs 85000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Principle Barat Makeover" data-price="55000" data-details="<ul><li>Makeup + Hairduo</li><li>Whitening Facial</li><li>Nails</li><li>Half Arms + Half Legs wax</li><li>Eyebrows + Uperlips</li><li>Lashes</li></ul>">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Principle Barat Makeover</h3><div class="service-desc">A complete package for a radiant bridal look.</div></div><div class="price">Rs 55000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Senior Makeover Package (Barat)" data-price="45000" data-details="<ul><li>Makeup + Hairduo</li><li>Whitening Facial</li><li>Nails</li><li>Hand and Feet Polisher</li><li>Eyebrows + Uperlips</li><li>Lashes</li></ul>">
+            <div class="service-top"><div class="service-ic">💖</div><div><h3 class="service-title text-gradient-static">Senior Makeover Package</h3><div class="service-desc">Stunning makeup and hair for your Barat.</div></div><div class="price">Rs 45000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="walima-packages">Walima & Reception Makeover</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Signature Waleema Makeover Package" data-price="85000" data-details="<ul><li>Makeup with Services</li><li>Lashes</li><li>Nail paint application</li><li>Duppata Setting</li><li>Hairduo with flowers</li><li>Skin care before Makeup</li><li>Jewellery Setting</li></ul>">
+            <div class="service-top"><div class="service-ic">🌟</div><div><h3 class="service-title text-gradient-static">Signature Waleema Makeover</h3><div class="service-desc">Our premium package for a sophisticated Walima.</div></div><div class="price">Rs 85000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Principle Waleema Makeover" data-price="55000" data-details="<ul><li>Makeup + Hairduo</li><li>Nails</li><li>Eyebrows + Uperlips</li><li>Lashes</li><li>Dupata Setting</li><li>Jewellery setting</li></ul>">
+            <div class="service-top"><div class="service-ic">💎</div><div><h3 class="service-title text-gradient-static">Principle Waleema Makeover</h3><div class="service-desc">An elegant and complete Walima look.</div></div><div class="price">Rs 55000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Senior Makeover Package (Waleema)" data-price="35000" data-details="<ul><li>Makeup + Hairduo</li><li>Nails</li><li>Duppata setting</li><li>Jewellery setting</li><li>Lashes</li></ul>">
+            <div class="service-top"><div class="service-ic">🌙</div><div><h3 class="service-title text-gradient-static">Senior Makeover Package</h3><div class="service-desc">A beautiful look for your reception event.</div></div><div class="price">Rs 35000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="other-makeover">Other Makeover Packages</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Royal Bridal Makeup" data-price="100000" data-details="Our most premium Royal Bridal Makeup package.">
+            <div class="service-top"><div class="service-ic">👑</div><div><h3 class="service-title text-gradient-static">Royal Bridal Makeup</h3><div class="service-desc">The ultimate royal treatment.</div></div><div class="price">Rs 100,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Model Bridal Makeup" data-price="85000" data-details="A high-fashion Model Bridal Makeup package.">
+            <div class="service-top"><div class="service-ic">📸</div><div><h3 class="service-title text-gradient-static">Model Bridal Makeup</h3><div class="service-desc">Picture-perfect model look.</div></div><div class="price">Rs 85,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Royal Walima Makeup" data-price="90000" data-details="A premium Royal Walima Makeup package.">
+            <div class="service-top"><div class="service-ic">💎</div><div><h3 class="service-title text-gradient-static">Royal Walima Makeup</h3><div class="service-desc">Premium royal walima look.</div></div><div class="price">Rs 90,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+
+        <h3 class="subsection-heading text-gradient-static" id="party-senior">Party & Senior Makeup</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Royal Party Makeup" data-price="35000" data-details="Premium Royal Party Makeup for a glamorous look.">
+            <div class="service-top"><div class="service-ic">🎉</div><div><h3 class="service-title text-gradient-static">Royal Party Makeup</h3><div class="service-desc">High-end party glam.</div></div><div class="price">Rs 35,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Signature Normal Makeup" data-price="25000" data-details="Our Signature Normal Makeup for any occasion.">
+            <div class="service-top"><div class="service-ic">✨</div><div><h3 class="service-title text-gradient-static">Signature Normal Makeup</h3><div class="service-desc">Signature look for any event.</div></div><div class="price">Rs 25,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Party Senior Makeup" data-price="10000" data-details="Elegant Party Senior Makeup. Note: All senior makeup and signature only one facial package.">
+            <div class="service-top"><div class="service-ic">⭐</div><div><h3 class="service-title text-gradient-static">Party Senior Makeup</h3><div class="service-desc">Elegant makeup for seniors.</div></div><div class="price">Rs 10,000</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+        
+        <h3 class="subsection-heading text-gradient-static" id="special-offers">Special Offers</h3>
+        <div class="services">
+          <article class="service-card tilt" data-service="Mid-Week Glow" data-price="2500" data-details="Get a refreshing facial and a classic mani/pedi combo for a special discounted price. Valid Tuesdays to Thursdays.">
+            <div class="service-top"><div class="service-ic" style="background: linear-gradient(135deg, #fce5a3, #fff);">🎉</div><div><h3 class="service-title text-gradient-static">Mid-Week Glow</h3><div class="service-desc">Facial + Mani/Pedi combo. (Tue-Thurs)</div></div><div class="price">Rs 2500</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+          <article class="service-card tilt" data-service="Student Discount" data-price="20% Off" data-details="Show a valid student ID and get 20% off any individual service. Cannot be combined with other offers.">
+            <div class="service-top"><div class="service-ic" style="background: linear-gradient(135deg, #fce5a3, #fff);">🎓</div><div><h3 class="service-title text-gradient-static">Student Discount</h3><div class="service-desc">20% off any service with valid ID.</div></div><div class="price">20% Off</div></div>
+            <div class="service-actions"><button class="btn details" onclick="previewService(this)">Details</button><button class="btn book" onclick="bookService(this)">Book</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="gallery" role="region" aria-labelledby="gallery-heading" style="margin-top: 24px;">
+        <h2 id="gallery-heading" class="text-gradient">Gallery</h2>
+        
+        <div class="swiper swiper-gallery">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (1).jpg" alt="Gallery image 1">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (2).jpg" alt="Gallery image 2">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (3).jpg" alt="Gallery image 3">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (4).jpg" alt="Gallery image 4">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (5).jpg" alt="Gallery image 5">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (6).jpg" alt="Gallery image 6">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (7).jpg" alt="Gallery image 7">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (8).jpg" alt="Gallery image 8">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (9).jpg" alt="Gallery image 9">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (10).jpg" alt="Gallery image 10">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (11).jpg" alt="Gallery image 11">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (12).jpg" alt="Gallery image 12">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (13).jpg" alt="Gallery image 13">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (14).jpg" alt="Gallery image 14">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (15).jpg" alt="Gallery image 15">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (16).jpg" alt="Gallery image 16">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (17).jpg" alt="Gallery image 17">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (18).jpg" alt="Gallery image 18">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (19).jpg" alt="Gallery image 19">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (20).jpg" alt="Gallery image 20">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (21).jpg" alt="Gallery image 21">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/Gallery (22).jpg" alt="Gallery image 22">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        
+      </section>
+  
+      <section id="contact" class="contact-section" role="region" aria-labelledby="contact-heading">
+        <div class="contact-header">
+          <h2 id="contact-heading" class="text-gradient">Get in Touch</h2>
+          <p>We'd love to hear from you. Book an appointment or just say hello!</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div>
+                        <h4>Location</h4>
+                        <p>City Housing, Phase 1, Street # 212, House # 355, Near Wifi Masjid, Guranwala, Pakistan</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📞</span>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+92 300 2323617</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">✉️</span>
+                    <div>
+                        <h4>Email</h4>
+                        <p>hello@girlygirl.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🕐</span>
+                    <div>
+                        <h4>Hours</h4>
+                        <p>Tue-Sun: 10:00 AM - 7:00 PM<br>Monday: Closed</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form" id="contactForm">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+      </section>
+  
+      <footer class="footer">
+        <div id="footer-animation-bg"></div>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>GirlyGirl Studio</h4>
+                <p>Your destination for premium beauty services and a confident new glow.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact & Hours</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.7rem;">
+                        <p style="margin: 0;">📞 <a href="tel:+923002323617">+92 300 2323617</a></p>
+                    </li>
+                    <li style="margin-bottom: 0.7rem;">
+                        <p style="margin: 0;">✉️ <a href="mailto:hello@girlygirl.com">hello@girlygirl.com</a></p>
+                    </li>
+                    <li style="margin-bottom: 0.7rem;">
+                        <p style="margin: 0;">📍 City Housing, Phase 1, Street # 212, House # 355, Near Wifi Masjid, Guranwala, Pakistan</p>
+                    </li>
+                    <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.7rem;">
+                        <p style="margin: 0; line-height: 1.6;"><strong>Hours:</strong><br>Tue-Sun: 10:00 AM - 7:00 PM<br>Monday: Closed</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg></a>
+                    <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                    <a href="https://tiktok.com" target="_blank" class="social-icon" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 2.31-4.64 2.88 2.88 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.96-.1z"/></svg></a>
+                    <a href="https://wa.me/923002323617" target="_blank" class="social-icon" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.54 2 12c0 1.77.46 3.44 1.25 4.93L2 22l5.13-1.34C8.5 21.41 10.2 21.96 12 21.96c5.5 0 10-4.5 10-10S17.5 2.04 12 2.04zm0 18.06c-1.57 0-3.05-.4-4.33-1.1l-.3-.18-3.22.84.86-3.13-.2-.32C3.8 14.99 3.4 13.55 3.4 12c0-4.74 3.86-8.6 8.6-8.6s8.6 3.86 8.6 8.6-3.86 8.6-8.6 8.6zm4.5-5.9c-.28-.14-1.65-.81-1.9-.91-.25-.1-.43-.14-.61.14-.18.28-.72.91-.88 1.1s-.33.18-.61.06c-.28-.12-1.17-.43-2.23-1.38-.83-.72-1.39-1.6-1.55-1.87-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.17.19-.28.28-.46.1-.18.05-.33-.02-.46-.08-.14-.61-1.47-.84-2.02-.23-.55-.46-.48-.61-.48-.14-.01-.33-.01-.5-.01s-.43.06-.66.3c-.23.24-.88.86-1.08 2.07-.2 1.22.08 2.39.2 2.56.12.17 1.7 2.59 4.1 3.63.58.25 1.03.4 1.38.51.5.17.95.14 1.3.1.4-.05 1.23-.5 1.4-1 .18-.5.18-.92.12-1-.05-.08-.18-.13-.46-.27z"/></svg></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Girly Girl Makeup Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+      </footer>
+    </main>
+  </div> 
+  <button class="float-contact" aria-label="Scroll to contact form" onclick="scrollToForm()">📩</button>
+
+  <div class="lightbox" id="lightbox" onclick="closeLB(event)">
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <div class="modal" id="details-modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <div class="modal-inner-content">
+        <button class="modal-close" id="modal-close-btn" aria-label="Close details">×</button>
+        <h3 id="modal-title" class="text-gradient-static"></h3>
+        <div class="price" id="modal-price"></div>
+        <div id="modal-details" class="muted"></div>
+        <button class="btn book" id="modal-book-btn">Book This Service</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-overlay" id="navOverlay"></div>
+  
+  <div class="nav-links" id="navLinks" role="dialog" aria-modal="true">
+    <button class="nav-close" id="navClose" aria-label="Close navigation">&times;</button>
+    <a href="#">Home</a>
+    
+    <div class="nav-item">
+      <a href="#services" class="services-toggle">Services</a>
+      <div class="dropdown-menu">
+        <a href="#hair-styling">Hair</a>
+        <a href="#facials">Facials</a>
+        <a href="#hydra-facial">Hydra Facial</a>
+        <a href="#kashees-facials">Kashee's Facials</a>
+        <a href="#mani-pedi">Mani/Pedi</a>
+        <a href="#waxing">Waxing</a>
+        <a href="#mehndi">Mehndi</a>
+        <a href="#mehndi-packages">Mehndi Packages</a>
+        <a href="#barat-packages">Barat Packages</a>
+        <a href="#walima-packages">Walima Packages</a>
+        <a href="#other-makeover">Other Makeovers</a>
+        <a href="#party-senior">Party/Senior Makeup</a>
+        <a href="#special-offers">Special Offers</a>
+      </div>
+    </div>
+    
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </div>
+  
+  <script src="./src/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('DOMContentLoaded', () => {
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // --- Mobile Sidebar Navigation Logic ---
+      const navToggle = document.getElementById('navToggle');
+      const navClose = document.getElementById('navClose');
+      const navLinks = document.getElementById('navLinks');
+      const navOverlay = document.getElementById('navOverlay');
+      
+      const openNav = () => {
+        navLinks.classList.add('open');
+        navOverlay.classList.add('open');
+        navToggle.setAttribute('aria-expanded', 'true');
+      };
+
+      const closeNav = () => {
+        navLinks.classList.remove('open');
+        navOverlay.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navLinks.querySelectorAll('.nav-item.open').forEach(item => {
+          item.classList.remove('open');
+        });
+      };
+
+      navToggle.addEventListener('click', openNav);
+      navClose.addEventListener('click', closeNav);
+      navOverlay.addEventListener('click', closeNav);
+
+      navLinks.querySelectorAll('a').forEach(link => {
+        if (!link.classList.contains('services-toggle')) {
+          link.addEventListener('click', closeNav);
+        }
+      });
+      
+      const mobileServicesToggle = navLinks.querySelector('.services-toggle');
+      if (mobileServicesToggle) {
+        mobileServicesToggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.target.closest('.nav-item').classList.toggle('open');
+        });
+        
+        const mobileDropdown = mobileServicesToggle.nextElementSibling;
+        if (mobileDropdown) {
+          mobileDropdown.querySelectorAll('a').forEach(subLink => {
+            subLink.addEventListener('click', closeNav);
+          });
+        }
+      }
+      
+      // --- Swiper Gallery Initialization ---
+      try {
+        if (typeof Swiper !== 'undefined') {
+          const swiper = new Swiper('.swiper-gallery', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            loop: true,
+            
+            // ===== FIX 1: Smoother Transition =====
+            speed: 1500, // 1.5 second transition
+            // ======================================
+
+            autoplay: {
+              delay: 3000,
+              disableOnInteraction: false,
+            },
+            
+            coverflowEffect: {
+              rotate: 40,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            },
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+            breakpoints: {
+              320: {
+                coverflowEffect: {
+                  rotate: 30,
+                  depth: 100,
+                },
+              },
+              768: {
+                coverflowEffect: {
+                  rotate: 40,
+                  depth: 100,
+                },
+              }
+            }
+          });
+        } else {
+          console.error('Swiper.js is not loaded.');
+        }
+      } catch(e) {
+        console.error('Error initializing Swiper:', e);
+      }
+
+      const contactForm = document.getElementById('contactForm');
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); 
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+          submitBtn.textContent = 'Message Sent! ✓';
+          submitBtn.style.background = 'linear-gradient(90deg, #4cc88b, var(--g1))';
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            submitBtn.style.background = '';
+            contactForm.reset();
+          }, 2500);
+        }, 1500);
+      });
+
+      const tilts = document.querySelectorAll('.tilt');
+      tilts.forEach(el => {
+        el.addEventListener('pointermove', e => {
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          const rx = (y) * 6; const ry = -(x) * 10;
+          el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        el.addEventListener('pointerleave', () => el.style.transform = 'none');
+      });
+
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      document.querySelectorAll('.swiper-gallery .swiper-slide img').forEach(img => {
+        const item = img.closest('.swiper-slide');
+        if (img) {
+          const open = () => {
+            if (item && !item.classList.contains('swiper-slide-active')) {
+              lightboxImg.src = img.src;
+              lightboxImg.alt = img.alt;
+              lightbox.classList.add('open');
+            }
+          };
+          item.addEventListener('click', open);
+        }
+      });
+
+
+      try {
+        const scrollers = document.querySelectorAll(".scroller");
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          scrollers.forEach((scroller) => {
+            scroller.setAttribute("data-animated", true);
+            const scrollerInner = scroller.querySelector(".scroller__inner");
+            const scrollerContent = Array.from(scrollerInner.children);
+            
+            scrollerContent.forEach((item) => {
+              const duplicatedItem = item.cloneNode(true);
+              duplicatedItem.setAttribute("aria-hidden", true);
+              scrollerInner.appendChild(duplicatedItem);
+            });
+          });
+        }
+      } catch(e) {
+        console.error("Error initializing infinite scroller:", e);
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.service-card, .swiper-gallery, .hero-card, .info-item, .contact-form').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+      });
+
+
+      function svgEl(tag, attrs = {}) {
+        const ns = "http://www.w3.org/2000/svg";
+        const el = document.createElementNS(ns, tag);
+        for (const k in attrs) {
+          el.setAttribute(k, attrs[k]);
+        }
+        return el;
+      }
+      function makePetalSVG(color="#d86aa5", size=36, styleClass='petal') {
+        const svg = svgEl('svg', { viewBox:'0 0 64 64', width:size, height:size, class: styleClass });
+        const path = svgEl('path', {
+          d: 'M32 4 C42 6 58 18 34 52 C30 56 26 56 22 52 C-2 18 14 6 24 4 C28 4 30 4 32 4 Z',
+          fill: color, opacity:0.95
+        });
+        svg.appendChild(path);
+        return svg;
+      }
+
+      try {
+        if (typeof anime === 'undefined') {
+          console.error('Header Petals Animation: anime.js is not loaded.');
+        } else {
+          (function populateHeaderPetals(){
+            const container = document.getElementById('headerPetalsLayer');
+            if (!container) return;
+            
+            const headerWidth = container.clientWidth || 1350;
+            const headerHeight = container.clientHeight || 100;
+            
+            const root = svgEl('svg', { 
+              viewBox: `0 0 ${headerWidth} ${headerHeight}`, 
+              preserveAspectRatio:'xMidYMid slice', 
+              width:'100%', 
+              height:'100%' 
+            });
+            container.appendChild(root);
+
+            const petalColors = ['rgba(155, 230, 201, 0.4)', 'rgba(255, 255, 255, 0.5)', 'rgba(155, 230, 201, 0.2)', 'rgba(255, 255, 255, 0.3)'];
+            const petalsCount = 40; 
+            const petalEls = [];
+
+            for (let i=0; i < petalsCount; i++){
+              const size = 8 + Math.round(Math.random() * 12);
+              const color = petalColors[i % petalColors.length];
+              const petalSVG = makePetalSVG(color, size, 'petal');
+              
+              const startX = Math.random() > 0.5 
+                ? -50 - Math.random() * 100
+                : headerWidth + 50 + Math.random() * 100;
+              const startY = Math.random() * headerHeight;
+              
+              const g = svgEl('g', { 
+                transform: `translate(${startX},${startY}) rotate(${Math.random()*360})`, 
+                class:`petal-item petal-${i}` 
+              });
+              
+              const inner = petalSVG.querySelectorAll('path');
+              inner.forEach(node => g.appendChild(node.cloneNode(true)));
+              root.appendChild(g);
+              petalEls.push({el:g, startX, startY, size});
+            }
+
+            petalEls.forEach((pObj, i) => {
+              const el = pObj.el;
+              const dir = pObj.startX > headerWidth / 2 ? -1 : 1;
+              
+              const travel = (headerWidth + 200) + Math.random() * 300;
+              const duration = 10000 + Math.random() * 10000;
+              const rotateAmt = (Math.random() * 720 - 360);
+              const verticalDrift = (Math.random() * (headerHeight / 1.5) - (headerHeight / 3));
+              
+              anime({
+                targets: el,
+                translateX: [
+                  {value: (dir > 0) ? `+=${travel}` : `-=${travel}`, duration: duration, easing: 'linear' }
+                ],
+                translateY: [
+                  {value: `+=${verticalDrift}`, duration: duration, easing: 'easeInOutSine'}
+                ],
+                rotate: [
+                  {value: `+=${rotateAmt}`, duration: duration, easing: 'linear'}
+                ],
+                opacity:[
+                  {value: [0, Math.random() * 0.4 + 0.2], duration: 1500 + Math.random() * 1000, easing: 'easeOutCubic'},
+                  {value: [el.style.opacity, 0], duration: 2000 + Math.random() * 1000, delay: duration - (3000 + Math.random() * 1000), easing: 'easeInCubic'}
+                ],
+                loop: true,
+                delay: i * (8000 / petalsCount),
+                easing: 'linear',
+              });
+            });
+          })();
+
+          (function pointerParallax(){
+            const card = document.querySelector('#header');
+            const petals = document.getElementById('headerPetalsLayer');
+            if (!card || !petals) return;
+
+            card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const cx = rect.left + rect.width/2;
+              const cy = rect.top + rect.height/2;
+              const dx = (e.clientX - cx) / rect.width;
+              const dy = (e.clientY - cy) / rect.height;
+              anime.set(petals, { translateX: dx * 20, translateY: dy * 10, rotate: dx * 1.5 });
+            });
+
+            card.addEventListener('mouseleave', () => {
+              anime({
+                targets: petals,
+                translateX: 0,
+                translateY: 0,
+                rotate: 0,
+                duration: 800,
+                easing: 'easeOutCubic'
+              });
+            });
+          })();
+        }
+      } catch (e) {
+        console.error('Error initializing header petal animation:', e);
+      }
+
+      try {
+        if (typeof anime === 'undefined') {
+          console.error('Footer Animation: anime.js is not loaded.');
+        } else {
+          const footer = document.querySelector('.footer');
+          const footerBg = document.createElement('div');
+          footerBg.id = 'footer-animation-bg';
+          footer.prepend(footerBg); 
+          
+          const footerHeight = footer.clientHeight;
+          const footerWidth = footer.clientWidth;
+          const numLeaves = 30;
+          const leafColors = ['rgba(155, 230, 201, 0.7)', 'rgba(255, 255, 255, 0.3)', 'rgba(24, 161, 107, 0.5)'];
+          const leafPath = 'M15 0 C10 5, 5 15, 0 15 C5 20, 10 30, 15 30 C20 30, 25 20, 30 15 C25 15, 20 5, 15 0 Z';
+
+          for (let i = 0; i < numLeaves; i++) {
+            const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            leaf.setAttribute('viewBox', '0 0 30 30');
+            leaf.classList.add('leaf-svg');
+            path.setAttribute('d', leafPath);
+            path.setAttribute('fill', leafColors[anime.random(0, leafColors.length - 1)]);
+            
+            leaf.appendChild(path);
+            footerBg.appendChild(leaf);
+
+            anime({
+              targets: leaf,
+              translateY: [anime.random(-20, 0), footerHeight + 40],
+              translateX: [
+                { value: () => anime.random(0, footerWidth) },
+                { value: () => anime.random(0, footerWidth) + anime.random(-60, 60) }
+              ],
+              rotate: [
+                { value: () => anime.random(-60, 60) },
+                { value: () => anime.random(180, 360) }
+              ],
+              scale: [
+                { value: () => anime.random(0.5, 1.2) },
+                { value: () => anime.random(0.5, 1.2) }
+              ],
+              opacity: [
+                { value: () => anime.random(0.3, 0.8), duration: 1000 },
+                { value: 0, delay: anime.random(3000, 6000) }
+              ],
+              duration: anime.random(5000, 9000),
+              delay: anime.random(0, 7000),
+              easing: 'linear',
+              loop: true
+            });
+          }
+        }
+      } catch (e) {
+        console.error('Error initializing footer animation:', e);
+      }
+
+      try {
+        if (typeof anime !== 'undefined') {
+          const heroCard = document.getElementById('heroCard');
+          const heroHeight = heroCard.clientHeight;
+          const heroWidth = heroCard.clientWidth;
+          const numFlowers = 15;
+          const flowerColors = ['rgba(255, 255, 255, 0.4)', 'rgba(155, 230, 201, 0.6)', 'rgba(255, 255, 255, 0.2)'];
+          const flowerPath = 'M15 3 C12 3, 10 0, 8 3 C5 3, 3 5, 3 8 C3 10, 0 12, 3 15 C3 18, 5 20, 8 20 C10 23, 12 25, 15 25 C18 25, 20 23, 22 20 C25 20, 27 18, 27 15 C30 12, 27 10, 27 8 C27 5, 25 3, 22 3 C20 0, 18 3, 15 3 Z';
+
+          for (let i = 0; i < numFlowers; i++) {
+            const flower = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            
+            flower.setAttribute('viewBox', '0 0 30 30');
+            flower.classList.add('flower-svg');
+            path.setAttribute('d', flowerPath);
+            path.setAttribute('fill', flowerColors[anime.random(0, flowerColors.length - 1)]);
+            
+            flower.appendChild(path);
+            heroCard.appendChild(flower);
+
+            anime({
+              targets: flower,
+              translateY: [heroHeight + 20, -40],
+              translateX: [
+                { value: () => anime.random(0, heroWidth) },
+                { value: () => anime.random(0, heroWidth) + anime.random(-30, 30) }
+              ],
+              rotate: {
+                value: () => anime.random(0, 360),
+                duration: () => anime.random(6000, 10000)
+              },
+              scale: () => anime.random(0.5, 1.1),
+              opacity: [
+                { value: () => anime.random(0.2, 0.7), duration: 1500 },
+                { value: 0, delay: anime.random(3000, 5000) }
+              ],
+              duration: anime.random(6000, 10000),
+              delay: anime.random(0, 9000),
+              easing: 'linear',
+              loop: true
+            });
+          }
+        }
+      } catch (e) {
+        console.error('Error initializing hero animation:', e);
+      }
+
+      try {
+        if (typeof anime !== 'undefined') {
+          const logoContainer = document.querySelector('.logo');
+          const logoLeft = document.getElementById('logo-left');
+          const logoRight = document.getElementById('logo-right');
+
+          anime.set(logoLeft, { translateX: '0%' });
+          anime.set(logoRight, { translateX: '0%' });
+
+          logoContainer.addEventListener('mouseenter', () => {
+            anime.remove([logoLeft, logoRight]);
+            anime({ targets: logoLeft, translateX: '-25%', easing: 'easeOutCubic', duration: 400 });
+            anime({ targets: logoRight, translateX: '25%', easing: 'easeOutCubic', duration: 400 });
+          });
+
+          logoContainer.addEventListener('mouseleave', () => {
+            anime.remove([logoLeft, logoRight]);
+            anime({ targets: logoLeft, translateX: '0%', easing: 'easeOutCubic', duration: 500 });
+            anime({ targets: logoRight, translateX: '0%', easing: 'easeOutCubic', duration: 500 });
+          });
+        }
+      } catch (e) {
+        console.error('Error initializing logo animation:', e);
+      }
+
+    }); // End DOMContentLoaded
+
+    function closeLB(e) {
+      if (e.target.id === 'lightbox') {
+        document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('lightboxImg').src = '';
+      }
+    }
+    
+    const detailsModal = document.getElementById('details-modal');
+    
+    function previewService(btn) {
+      const card = btn.closest('.service-card');
+      const title = card.dataset.service;
+      const price = card.dataset.price;
+      const details = card.dataset.details || 'Contact us to know more or book online.';
+      
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-price').textContent = (price.includes('%')) ? price : `Rs ${price}`;
+      document.getElementById('modal-details').innerHTML = details; 
+      
+      const modalBookBtn = document.getElementById('modal-book-btn');
+      modalBookBtn.onclick = () => {
+        bookDirectly(title);
+        detailsModal.classList.remove('open'); 
+      };
+      
+      detailsModal.classList.add('open');
+    }
+
+    function closeModal(e) {
+      if (e.target.id === 'details-modal' || e.target.id === 'modal-close-btn') {
+        detailsModal.classList.remove('open');
+      }
+    }
+
+    function bookDirectly(serviceName) {
+      const phoneNumber = "923002323617";
+      const message = `Hello, I would like to book the "${serviceName}" service.`;
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+      window.open(whatsappURL, '_blank');
+    }
+
+    function bookService(btn) {
+      const card = btn.closest('.service-card');
+      const serviceName = card.dataset.service;
+      tinyConfetti(btn);
+      bookDirectly(serviceName);
+    }
+
+    function tinyConfetti(anchor) {
+      const root = document.createElement('div');
+      root.style.cssText = 'position:absolute;pointer-events:none;left:0;top:0;width:100%;height:100%;z-index: 10;';
+      if (anchor && anchor.closest) {
+        const parentCard = anchor.closest('.service-card');
+        if (parentCard) {
+            parentCard.appendChild(root);
+        } else {
+            document.body.appendChild(root);
+        }
+      } else {
+         document.body.appendChild(root);
+      }
+
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        const size = (6 + Math.random() * 8) + 'px';
+        p.style.cssText = `position:absolute;left:${(50 + (Math.random()*120-60))}%;top:${(20 + Math.random()*40)}%;width:${size};height:${size};background:rgba(24,161,107,${(0.6+Math.random()*0.3)});transform:translateY(0) rotate(${Math.random()*360}deg);border-radius:2px;opacity:0.95;`;
+        root.appendChild(p);
+        const tx = (Math.random() * 160 - 80);
+        const ty = (Math.random() * 160 + 60);
+        p.animate([
+          { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${tx}px, ${ty}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
+        ], { duration: 700 + Math.random() * 600, easing: 'cubic-bezier(.2,.9,.3,1)' });
+      }
+      setTimeout(() => root.remove(), 1400);
+    }
+
+    function scrollToForm() {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      const navLinks = document.getElementById('navLinks');
+      if (navLinks.classList.contains('open')) {
+        document.getElementById('navClose').click();
+      }
+    }
+  </script>
+</body>
+</html>
