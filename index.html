@@ -8,10 +8,10 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="./src/swiper-bundle.min.css" />
 
-  <style>
-    :root{
+<style>
+  :root{
       --bg:#f4fbf7;
       --g1:#0f7a4a;   /* primary deep green */
       --g2:#18a16b;   /* mid green */
@@ -260,8 +260,8 @@
       border: 1px solid var(--glass-border);
       position: relative;
       overflow: hidden;
-      animation: dynamic-glow 3.5s ease-in-out infinite;
       text-align: center;
+      animation: dynamic-glow 3.5s ease-in-out infinite;
     }
     .hero-card > * {
       position: relative;
@@ -370,7 +370,7 @@
     .btn.book{background:linear-gradient(90deg,var(--g2),var(--g1));color:white}
     .btn.details{color: var(--g1); background: var(--accent);}
 
-    /* --- Swiper Gallery Styles --- */
+    /* --- Swiper Gallery Styles (SMOOTH VERSION) --- */
     .swiper-gallery {
       width: 100%;
       padding-top: 50px;
@@ -378,29 +378,53 @@
       overflow: visible;
     }
     
-    /* ===== FIX 2: Adjusted Frame Size (Desktop) ===== */
+    /* 1. SET THE BASE SIZE for inactive slides. */
     .swiper-gallery .swiper-slide {
       background-position: center;
       background-size: cover;
-      width: 225px;  /* 9:16 Ratio */
-      height: 400px; /* 9:16 Ratio */
+      width: 225px;  /* Base (inactive) width */
+      height: 400px; /* Base (inactive) height */
       border-radius: 16px;
       box-shadow: var(--shadow);
-      transition: width 0.4s ease, height 0.4s ease;
-    }
-    .swiper-gallery .swiper-slide-active {
-      width: 338px;  /* 9:16 Ratio */
-      height: 600px; /* 9:16 Ratio */
-    }
-    /* ============================================== */
+      
+      /* 2. IMPORTANT: Allow the scaled-up image to "spill out" */
+      overflow: visible;
     
+      /* 3. Let Swiper's JS (speed: 1500) handle the transform transition. */
+      transition-property: transform; 
+    }
+    
+    /* 4. ADD Z-INDEX to the active slide. */
+    .swiper-gallery .swiper-slide-active {
+      z-index: 10;
+    }
+    
+    /* 5. ANIMATE THE IMAGE, NOT THE CONTAINER. */
     .swiper-gallery .swiper-slide img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 16px;
+      
+      /* Base (inactive) state */
+      transform: scale(1.0); 
+      
+      /* Animate the 'transform' property smoothly (matches JS speed) */
+      transition: transform 1.5s ease; 
     }
+    
+    /* 6. SCALE THE ACTIVE IMAGE UP. (338/225 = 1.5) */
+    .swiper-gallery .swiper-slide-active img {
+      transform: scale(1.5);
+    }
+
+    .swiper-gallery .swiper-pagination {
+      position: relative; 
+      z-index: 11; 
+      padding-top: 120px;
+    }
+    
     .swiper-gallery .swiper-pagination-bullet {
       background: var(--g3);
       opacity: 0.8;
@@ -409,6 +433,7 @@
       background: var(--g1);
       opacity: 1;
     }
+    /* --- End Swiper Gallery Styles --- */
 
 
     /* Contact Section */
@@ -768,61 +793,62 @@
       will-change: transform, opacity;
     }
 
-    .interior-showcase {
-      margin: 24px 0 0 0; 
-      padding: 24px 24px 24px 24px;
-    }
-    .scroller {
-      overflow: hidden;
-      -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
-      mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
-    }
-    .scroller__inner {
-      display: flex;
-      gap: 16px;
-      list-style: none;
-      padding: 0 16px;
-      margin: 0;
-    }
-    .scroller__inner li {
-      height: 200px;
-      aspect-ratio: 16 / 10;
-      overflow: hidden;
-      border-radius: 12px;
-      background: var(--g3);
-      flex-shrink: 0;
-      box-shadow: 0 0 16px 4px rgba(15, 122, 74, 0.5); 
-      animation: dynamic-glow 3.5s ease-in-out infinite;
-      transition: transform 0.3s ease;
-    }
-    .scroller__inner li:hover {
-      transform: scale(1.03);
-      animation-play-state: paused;
-    }
-    .scroller__inner li:nth-child(even) {
-      animation-delay: -1.75s;
-    }
-    .scroller__inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
     @keyframes dynamic-glow {
       0% { box-shadow: 0 0 8px 0px rgba(15, 122, 74, 0.3); }
       50% { box-shadow: 0 0 18px 4px rgba(15, 122, 74, 0.6); }
       100% { box-shadow: 0 0 8px 0px rgba(15, 122, 74, 0.3); }
     }
     
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    /* --- Interior Showcase Swiper --- */
+    .interior-showcase {
+      margin: 24px 0 0 0; 
+      padding: 10px 0 0 0; /* Adjusted padding */
+    }
+    
+    .interior-swiper {
+      width: 100%;
+      /* Height will be set by slides */
+      padding-bottom: 40px; /* Space for pagination */
+      overflow: hidden; 
     }
 
-    .scroller[data-animated="true"] .scroller__inner {
-      width: max-content;
-      flex-wrap: nowrap;
-      animation: scroll-left 40s linear infinite;
+    .interior-swiper .swiper-slide {
+      height: 200px; /* From your original li style */
+      aspect-ratio: 16 / 10; /* From your original li style */
+      width: auto; /* Let aspect-ratio define width */
+      
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 16px 4px rgba(15, 122, 74, 0.5); 
+      animation: dynamic-glow 3.5s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .interior-swiper .swiper-slide:hover {
+      transform: scale(1.03);
+      animation-play-state: paused;
+    }
+
+    .interior-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Styles for the new pagination */
+    .interior-swiper .interior-pagination.swiper-pagination {
+      position: relative; /* Keep it in the document flow */
+      bottom: auto;
+      padding-top: 25px; /* Space above pagination dots */
+    }
+    
+    .interior-swiper .swiper-pagination-bullet {
+      background: var(--g3);
+      opacity: 0.8;
+    }
+    .interior-swiper .swiper-pagination-bullet-active {
+      background: var(--g1);
+      opacity: 1;
     }
 
 
@@ -907,29 +933,30 @@
       .contact-container { padding: 0 1rem; }
       .footer-content { grid-template-columns: 1fr; }
 
-      .scroller__inner li {
+      .interior-swiper .swiper-slide {
         height: 200px;
       }
       .interior-showcase {
           margin: 24px 0 0 0;
       }
       
-      /* ===== FIX 2: Adjusted Frame Size (Mobile) ===== */
+      /* ===== RESPONSIVE SWIPER FIX ===== */
       .swiper-gallery {
         padding-top: 20px;
         padding-bottom: 60px;
       }
+      /* Set the mobile BASE size */
       .swiper-gallery .swiper-slide {
-        width: 180px;  /* 9:16 Ratio */
-        height: 320px; /* 9:16 Ratio */
+        width: 180px;  /* Base (inactive) width */
+        height: 320px; /* Base (inactive) height */
       }
-      .swiper-gallery .swiper-slide-active {
-        width: 270px;  /* 9:16 Ratio */
-        height: 480px; /* 9:16 Ratio */
-      }
+      /* The .swiper-slide-active img { transform: scale(1.5); } rule 
+         from above will automatically apply, creating the
+         270x480 active size smoothly. */
       /* ============================================= */
     }
-  </style>
+</style>
+
 </head>
 <body>
   <div class="wrap">
@@ -979,23 +1006,39 @@
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-card tilt" id="heroCard">
+      <section class="hero" id="home">
+        <div class="hero-card" id="heroCard">
           <h2 class="text-gradient">Welcome to Girly Girl Make Up Studio</h2>
           <p>Where every session is crafted to give you a fresh, confident glow. Explore our services, view the gallery, and book your moment of beauty.</p>
           
-          <section class="interior-showcase" aria-label="Our Salon Interior">
-            <div class="scroller" data-direction="left">
-              <ul class="scroller__inner">
-                <li><img src="./assets/BilBoard@0.75x.jpg" alt="Bright salon interior with chairs"></li>
-                <li><img src="./assets/DP1.jpg" alt="Makeup station with mirror and lights"></li>
-                <li><img src="./assets/DP2.jpg" alt="Makeup station with mirror and lights"></li>
-                <li><img src="./assets/DP3.jpg" alt="Makeup station with mirror and lights"></li>
-                <li><img src="./assets/DP4.jpg" alt="Makeup station with mirror and lights"></li>
-                <li><img src="./assets/DP5.jpg" alt="Makeup station with mirror and lights"></li>
-              </ul>
+
+
+        <section class="interior-showcase" aria-label="Our Salon Interior">
+          <div class="swiper interior-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="./assets/BilBoard@0.75x.jpg" alt="Bright salon interior with chairs">
+              </div>
+              <div class="swiper-slide">
+                <img src="./assets/DP1.jpg" alt="Makeup station with mirror and lights">
+              </div>
+              <div class="swiper-slide">
+                <img src="./assets/DP2.jpg" alt="Makeup station with mirror and lights">
+              </div>
+              <div class="swiper-slide">
+                <img src="./assets/DP3.jpg" alt="Makeup station with mirror and lights">
+              </div>
+              <div class="swiper-slide">
+                <img src="./assets/DP4.jpg" alt="Makeup station with mirror and lights">
+              </div>
+              <div class="swiper-slide">
+                <img src="./assets/DP5.jpg" alt="Makeup station with mirror and lights">
+              </div>
             </div>
-          </section>
+            <div class="swiper-pagination interior-pagination"></div>
+          </div>
+        </section>
+        
         </div>
       </section>
 
@@ -1232,6 +1275,15 @@
               <img src="./assets/Gallery (1).jpg" alt="Gallery image 1">
             </div>
             <div class="swiper-slide">
+              <img src="./assets/S1.jpg" alt="Gallery image 1">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/S2.jpg" alt="Gallery image 1">
+            </div>
+            <div class="swiper-slide">
+              <img src="./assets/S3.jpg" alt="Gallery image 2">
+            </div>
+            <div class="swiper-slide">
               <img src="./assets/Gallery (2).jpg" alt="Gallery image 2">
             </div>
             <div class="swiper-slide">
@@ -1305,47 +1357,6 @@
           <h2 id="contact-heading" class="text-gradient">Get in Touch</h2>
           <p>We'd love to hear from you. Book an appointment or just say hello!</p>
         </div>
-
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="info-item">
-                    <span class="info-icon">📍</span>
-                    <div>
-                        <h4>Location</h4>
-                        <p>City Housing, Phase 1, Street # 212, House # 355, Near Wifi Masjid, Guranwala, Pakistan</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <span class="info-icon">📞</span>
-                    <div>
-                        <h4>Phone</h4>
-                        <p>+92 300 2323617</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <span class="info-icon">✉️</span>
-                    <div>
-                        <h4>Email</h4>
-                        <p>hello@girlygirl.com</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <span class="info-icon">🕐</span>
-                    <div>
-                        <h4>Hours</h4>
-                        <p>Tue-Sun: 10:00 AM - 7:00 PM<br>Monday: Closed</p>
-                    </div>
-                </div>
-            </div>
-
-            <form class="contact-form" id="contactForm">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-      </section>
   
       <footer class="footer">
         <div id="footer-animation-bg"></div>
@@ -1359,16 +1370,33 @@
                 <h4>Contact & Hours</h4>
                 <ul style="list-style: none; padding: 0;">
                     <li style="margin-bottom: 0.7rem;">
-                        <p style="margin: 0;">📞 <a href="tel:+923002323617">+92 300 2323617</a></p>
+                        <p style="margin: 0;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone-fill" viewBox="0 0 16 16">
+                            <path d="M3 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm6 11a1 1 0 1 0-2 0 1 1 0 0 0 2 0"/>
+                          </svg>
+                          <a href="tel:+923002323617">+92 300 2323617</a>
+                        </p>
                     </li>
                     <li style="margin-bottom: 0.7rem;">
-                        <p style="margin: 0;">✉️ <a href="mailto:hello@girlygirl.com">hello@girlygirl.com</a></p>
+                        <p style="margin: 0;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-open-fill" viewBox="0 0 16 16">
+                            <path d="M8.941.435a2 2 0 0 0-1.882 0l-6 3.2A2 2 0 0 0 0 5.4v.314l6.709 3.932L8 8.928l1.291.718L16 5.714V5.4a2 2 0 0 0-1.059-1.765zM16 6.873l-5.693 3.337L16 13.372v-6.5Zm-.059 7.611L8 10.072.059 14.484A2 2 0 0 0 2 16h12a2 2 0 0 0 1.941-1.516M0 13.373l5.693-3.163L0 6.873z"/>
+                          </svg>
+                          <a href="mailto:hello@girlygirl.com">sidrarana2656@gmail.com</a></p>
                     </li>
                     <li style="margin-bottom: 0.7rem;">
-                        <p style="margin: 0;">📍 City Housing, Phase 1, Street # 212, House # 355, Near Wifi Masjid, Guranwala, Pakistan</p>
+                        <p style="margin: 0;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                          </svg>
+                           City Housing, Phase 1, Street # 212, House # 355, Near Wifi Masjid, Guranwala, Pakistan</p>
                     </li>
                     <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 0.7rem;">
-                        <p style="margin: 0; line-height: 1.6;"><strong>Hours:</strong><br>Tue-Sun: 10:00 AM - 7:00 PM<br>Monday: Closed</p>
+                        <p style="margin: 0; line-height: 1.6;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                          </svg>
+                        <strong>Hours:</strong><br>Tue-Sun: 10:00 AM - 7:00 PM<br>Monday: Closed</p>
                     </li>
                 </ul>
             </div>
@@ -1376,19 +1404,38 @@
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-heart-fill" viewBox="0 0 16 16">
+                        <path d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.707L8 2.207 1.354 8.853a.5.5 0 1 1-.708-.707z"/>
+                        <path d="m14 9.293-6-6-6 6V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5zm-6-.811c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.691 0-5.018"/>
+                      </svg>
+                      Home</a></li>
+                    <li><a href="#services">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+                        <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>
+                      </svg>
+                      Services</a></li>
+                    <li><a href="#gallery">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                      </svg>
+                      Gallery</a></li>
+                    <li><a href="#contact">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
+                        <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                        <path d="M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1z"/>
+                      </svg>
+                      Contact</a></li>
                 </ul>
             </div>
 
             <div class="footer-section">
                 <h4>Follow Us</h4>
                 <div class="social-links">
-                    <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg></a>
+                    <a href="https://www.instagram.com/girlygirlmakeupstudio?igsh=MW91eWI3dW12cmZxdQ==" target="_blank" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg></a>
                     <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-                    <a href="https://tiktok.com" target="_blank" class="social-icon" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 2.31-4.64 2.88 2.88 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.96-.1z"/></svg></a>
+                    <a href="https://www.tiktok.com/@girly.girl.makeup.studio" target="_blank" class="social-icon" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 2.31-4.64 2.88 2.88 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.96-.1z"/></svg></a>
                     <a href="https://wa.me/923002323617" target="_blank" class="social-icon" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.54 2 12c0 1.77.46 3.44 1.25 4.93L2 22l5.13-1.34C8.5 21.41 10.2 21.96 12 21.96c5.5 0 10-4.5 10-10S17.5 2.04 12 2.04zm0 18.06c-1.57 0-3.05-.4-4.33-1.1l-.3-.18-3.22.84.86-3.13-.2-.32C3.8 14.99 3.4 13.55 3.4 12c0-4.74 3.86-8.6 8.6-8.6s8.6 3.86 8.6 8.6-3.86 8.6-8.6 8.6zm4.5-5.9c-.28-.14-1.65-.81-1.9-.91-.25-.1-.43-.14-.61.14-.18.28-.72.91-.88 1.1s-.33.18-.61.06c-.28-.12-1.17-.43-2.23-1.38-.83-.72-1.39-1.6-1.55-1.87-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.5.14-.17.19-.28.28-.46.1-.18.05-.33-.02-.46-.08-.14-.61-1.47-.84-2.02-.23-.55-.46-.48-.61-.48-.14-.01-.33-.01-.5-.01s-.43.06-.66.3c-.23.24-.88.86-1.08 2.07-.2 1.22.08 2.39.2 2.56.12.17 1.7 2.59 4.1 3.63.58.25 1.03.4 1.38.51.5.17.95.14 1.3.1.4-.05 1.23-.5 1.4-1 .18-.5.18-.92.12-1-.05-.08-.18-.13-.46-.27z"/></svg></a>
                 </div>
             </div>
@@ -1399,7 +1446,12 @@
       </footer>
     </main>
   </div> 
-  <button class="float-contact" aria-label="Scroll to contact form" onclick="scrollToForm()">📩</button>
+  <button class="float-contact" aria-label="Scroll to contact form" onclick="scrollToForm()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-rolodex" viewBox="0 0 16 16">
+      <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+      <path d="M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1z"/>
+    </svg>
+  </button>
 
   <div class="lightbox" id="lightbox" onclick="closeLB(event)">
     <img id="lightboxImg" src="" alt="" />
@@ -1513,11 +1565,11 @@
             loop: true,
             
             // ===== FIX 1: Smoother Transition =====
-            speed: 1500, // 1.5 second transition
+            speed: 2000, // 3 second transition
             // ======================================
 
             autoplay: {
-              delay: 3000,
+              delay: 2000,
               disableOnInteraction: false,
             },
             
@@ -1547,6 +1599,24 @@
               }
             }
           });
+
+          const interiorSwiper = new Swiper('.interior-swiper', {
+            slidesPerView: 'auto',    // Shows as many slides as fit
+            spaceBetween: 16,         // Gap between slides
+            loop: true,               // Loops
+            centeredSlides: true,     // Centers the active slide
+            grabCursor: true,
+            autoplay: {
+              delay: 2500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true, // Pauses autoplay on hover
+            },
+            pagination: {
+              el: '.interior-pagination',
+              clickable: true,
+            },
+          });
+
         } else {
           console.error('Swiper.js is not loaded.');
         }
@@ -1601,26 +1671,6 @@
           item.addEventListener('click', open);
         }
       });
-
-
-      try {
-        const scrollers = document.querySelectorAll(".scroller");
-        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          scrollers.forEach((scroller) => {
-            scroller.setAttribute("data-animated", true);
-            const scrollerInner = scroller.querySelector(".scroller__inner");
-            const scrollerContent = Array.from(scrollerInner.children);
-            
-            scrollerContent.forEach((item) => {
-              const duplicatedItem = item.cloneNode(true);
-              duplicatedItem.setAttribute("aria-hidden", true);
-              scrollerInner.appendChild(duplicatedItem);
-            });
-          });
-        }
-      } catch(e) {
-        console.error("Error initializing infinite scroller:", e);
-      }
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => {
